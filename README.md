@@ -47,4 +47,4 @@ requires python3.9, could be changed in `Pipfile`
 
 ## P.S.
 
-Extra thanks to: [ideas](https://github.com/aroberge/ideas) & [lark-parser](https://github.com/lark-parser/lark)
+Extra thanks to: [ideas](https://github.com/aroberge/ideas) (see [issue](https://github.com/aroberge/ideas/issues/28)) & [lark-parser](https://github.com/lark-parser/lark)
