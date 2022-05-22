@@ -1,6 +1,7 @@
-import test_kb
 import kbmodule
 kbmodule.add_hook()
+
+import test_kb
 
 
 print("CHECKING RULE 1", test_kb.TestRule().check(1))
