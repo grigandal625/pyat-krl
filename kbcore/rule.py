@@ -1,4 +1,4 @@
-class Rule:
+class BaseRule:
 
     def check(self, **kwargs) -> bool:
         pass

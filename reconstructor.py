@@ -5,19 +5,6 @@ from kbparser import parser
 from tree_transformer import transform
 
 
-class MyReconstructor(Reconstructor):
-
-    def _reconstruct(self, tree: Tree):
-        unreduced_tree = self.match_tree(tree, tree.data)
-        res = self.write_tokens.transform(unreduced_tree)
-        for item in res:
-            if isinstance(item, Tree):
-                # TODO use orig_expansion.rulename to support templates
-                yield from self._reconstruct(item)
-            else:
-                yield item
-
-
 def special(sym):
     return Token('SPECIAL', sym.name)
 
@@ -54,12 +41,16 @@ def postproc(items):
             yield item
 
 
-reconstructor = MyReconstructor(
-    parser, {'_NEWLINE': special, '_DEDENT': special, '_INDENT': special})
-
+def compile_kb(source):
+    reconstructor = Reconstructor(
+        parser, {'_NEWLINE': special, '_DEDENT': special, '_INDENT': special})
+    tree = parser.parse(source, "file_input")
+    tree = transform(tree)
+    return reconstructor.reconstruct(tree, postproc)
+    
 
 if __name__ == '__main__':
-    tree = parser.parse(r"""
+    compiled = compile_kb(r"""
 ruledef HelloRule:
     '''
     Test Rule
@@ -69,7 +60,5 @@ ruledef HelloRule:
         (y in [10, 'yes']))
     then:
         return x + 17
-""", start='file_input')
-    tree = transform(tree)
-    output = reconstructor.reconstruct(tree, postproc)
-    print(output)
+""")
+    print(compiled)
